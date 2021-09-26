@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
+          # image: us.gcr.io/ticketing-dev-327218/auth
           image: briceduke/auth
 ---
 apiVersion: v1

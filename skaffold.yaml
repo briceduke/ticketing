@@ -7,8 +7,11 @@ deploy:
 build:
   local:
     push: false
+  # googleCloudBuild:
+  #   projectId: ticketing-dev-327218
   artifacts:
     - image: briceduke/auth
+      # - image: us.gcr.io/ticketing-dev-327218/auth
       context: auth
       docker:
         dockerfile: Dockerfile

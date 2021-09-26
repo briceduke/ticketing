@@ -90,7 +90,7 @@ $ yarn start
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
 
-Made with :heart: by <a href="https://github.com/briceduke" target="_blank">{{YOUR_NAME}}</a>
+Made with :heart: by <a href="https://github.com/briceduke" target="_blank">Brice Duke</a>
 
 &#xa0;
 

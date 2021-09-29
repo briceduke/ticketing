@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 
-import { RequestValidationError } from '../errors';
+import { BadRequestError, RequestValidationError } from '../errors';
+import { User } from '../models/User';
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.post(
 			.isLength({ min: 8, max: 20 })
 			.withMessage('Password must be between 4 and 20 characters!'),
 	],
-	(req: Request, res: Response) => {
+	async (req: Request, res: Response) => {
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
@@ -23,7 +24,20 @@ router.post(
 
 		const { email, password } = req.body;
 
-		res.status(201).send({});
+		const existingUser = await User.findOne({ email });
+
+		if (existingUser) {
+			throw new BadRequestError('User is already registered!')
+		}
+
+		const user = User.build({
+			email,
+			password
+		});
+
+		await user.save();
+
+		res.status(201).send(user);
 	}
 );
 

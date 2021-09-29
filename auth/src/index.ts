@@ -1,6 +1,7 @@
 import 'express-async-errors';
 
 import express from 'express';
+import mongoose from 'mongoose';
 
 import { NotFoundError } from './errors';
 import { errorHandler } from './middlewares/error-handler.middleware';
@@ -26,6 +27,16 @@ app.get('*', async () => {
 
 app.use(errorHandler);
 
+const start = async () => {
+	try {
+		await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
+	} catch (err) {
+		console.error(err);
+	}
+};
+
 app.listen(port, () => {
 	console.log(`Running on http://localhost:${port}`);
 });
+
+start();

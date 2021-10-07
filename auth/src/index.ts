@@ -1,5 +1,6 @@
 import 'express-async-errors';
 
+import cookieSession from 'cookie-session';
 import express from 'express';
 import mongoose from 'mongoose';
 
@@ -14,7 +15,14 @@ const app = express();
 
 const port = 3000;
 
+app.set('trust proxy', true);
 app.use(express.json());
+app.use(
+	cookieSession({
+		signed: false,
+		secure: true,
+	})
+);
 
 app.use(currentUserRouter);
 app.use(signUpRouter);

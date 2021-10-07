@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import jwt from 'jsonwebtoken';
 
 import { BadRequestError, RequestValidationError } from '../errors';
 import { User } from '../models/User';
@@ -27,15 +28,29 @@ router.post(
 		const existingUser = await User.findOne({ email });
 
 		if (existingUser) {
-			throw new BadRequestError('User is already registered!')
+			throw new BadRequestError('User is already registered!');
 		}
 
 		const user = User.build({
 			email,
-			password
+			password,
 		});
 
 		await user.save();
+
+		// Generate JWT
+		const userJwt = jwt.sign(
+			{
+				sub: user.id,
+				email: user.email,
+			},
+			'asdf'
+		);
+
+		// Store in session
+		req.session = {
+			jwt: userJwt,
+		};
 
 		res.status(201).send(user);
 	}
